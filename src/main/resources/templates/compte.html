@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorator="template">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Ma banque</title>
+</head>
+
+<body>
+    
+    <main layout:fragment="content">
+        <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Consultation d'un compte</div>
+                <div class="panel-body">
+                    <form th:action="@{/consultercompte}" method="GET">
+                        <div>
+                            <label for=""> Code compte</label>
+                            <input type="text" name="codeCompte" th:value="${codeCompte}" />
+                            <button type="submit" class="btn btn-success">Valider</button>
+                        </div>
+                    </form>
+                    <div class="text-danger" th:if="${error}" th:text="${error.message}">
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary" th:if="${compte}">
+                <div class="panel-heading">Information sur le compte </div>
+                <div class="panel-body">
+                    <div>
+                        <label for="">Client</label>
+                        <span th:text="${compte.client.nom}"></span>
+                    </div>
+                    <div>
+                            <label for="">Code Compte</label>
+                            <span th:text="${compte.codeCompte}"></span>
+                        </div>
+                    <div>
+                            <label for="">Solde</label>
+                            <span th:text="${compte.solde}+ ' €'"></span>
+                        </div>
+                    <div>
+                        <label for="">Date Création</label>
+                        <span th:text="${#dates.format(compte.dateCreation, 'dd MMMM yyyy à HH:mm')}"></span>
+                    </div>
+                    <div>
+                        <label for="">Type de Compte: </label>
+                        <span th:text="${compte.class.simpleName}"></span>
+                    </div>
+                    <div th:if="${compte.class.simpleName == 'CompteCourant'}">
+                        <label for="">Découvert: </label>
+                        <span th:text="${compte.decouvert}"></span>
+                    </div>
+                    <div th:if="${compte.class.simpleName == 'CompteEpargne'}">
+                            <label for="">Taux: </label>
+                            <span th:text="${compte.taux}"></span>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="panel panel-primary" th:if="${compte}">
+                <div class="panel-heading">Opérations sur le compte </div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+            <div class="panel panel-primary" th:if="${compte}">
+                <div class="panel-heading">Historique des opérations</div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>num</th>
+                            <th>type</th>
+                            <th>date</th>
+                            <th>montant</th>
+                        </tr>
+                        
+                        <tr th:each=" o : ${listeOperations}">
+                            <td th:text="${o.numero}"></td>
+                            <td th:text="${o.class.simpleName}"></td>
+                            <td th:text="${o.dateOperation}"></td>
+                            <td th:text="${o.montant}"></td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

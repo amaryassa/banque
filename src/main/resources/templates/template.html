@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html 
+    lang="en" 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    >
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Ma banque</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <header>
+        <div class="navbar navbar-default navbar-inverse">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/operation}">operations</a></li>
+                    <li><a th:href="@{/compte}">comptes</a></li>
+                    <li><a th:href="@{/client}">clients</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <main th:layout:fragment="content"></main>
+    <footer>
+        <div class="navbar-fixed-bottom footer-content">
+            Paris Alger Bouzeguene Ibouyesfene
+        </div>
+    </footer>
+</body>
+</html>
