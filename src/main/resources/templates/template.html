@@ -10,6 +10,7 @@
     <title>Ma banque</title>
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+    
 </head>
 <body>
     <header>
@@ -20,6 +21,11 @@
                     <li><a th:href="@{/compte}">comptes</a></li>
                     <li><a th:href="@{/client}">clients</a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a th:href="@{/login?logout}">Logout</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
@@ -29,5 +35,6 @@
             Paris Alger Bouzeguene Ibouyesfene
         </div>
     </footer>
+    <script type="text/javascript"  src="../static/js/script.js"  th:src="@{/js/script.js}"> </script>
 </body>
 </html>

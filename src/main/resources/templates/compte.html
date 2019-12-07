@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html 
+    lang="en" 
+    xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
     layout:decorator="template">
 
 <head>
@@ -10,13 +13,13 @@
 </head>
 
 <body>
-    
+
     <main layout:fragment="content">
         <div class="col-sm-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">Consultation d'un compte</div>
                 <div class="panel-body">
-                    <form th:action="@{/consultercompte}" method="GET">
+                    <form th:action="@{/consulterCompte}" method="GET">
                         <div>
                             <label for=""> Code compte</label>
                             <input type="text" name="codeCompte" th:value="${codeCompte}" />
@@ -36,13 +39,13 @@
                         <span th:text="${compte.client.nom}"></span>
                     </div>
                     <div>
-                            <label for="">Code Compte</label>
-                            <span th:text="${compte.codeCompte}"></span>
-                        </div>
+                        <label for="">Code Compte</label>
+                        <span th:text="${compte.codeCompte}"></span>
+                    </div>
                     <div>
-                            <label for="">Solde</label>
-                            <span th:text="${compte.solde}+ ' €'"></span>
-                        </div>
+                        <label for="">Solde</label>
+                        <span th:text="${compte.solde}+ ' €'"></span>
+                    </div>
                     <div>
                         <label for="">Date Création</label>
                         <span th:text="${#dates.format(compte.dateCreation, 'dd MMMM yyyy à HH:mm')}"></span>
@@ -53,21 +56,49 @@
                     </div>
                     <div th:if="${compte.class.simpleName == 'CompteCourant'}">
                         <label for="">Découvert: </label>
-                        <span th:text="${compte.decouvert}"></span>
+                        <span th:text="${compte.decouvert}+ ' €'"></span>
                     </div>
                     <div th:if="${compte.class.simpleName == 'CompteEpargne'}">
                             <label for="">Taux: </label>
-                            <span th:text="${compte.taux}"></span>
+                            <span th:text="${compte.taux}+ ' %'"></span>
                         </div>
 
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-6">
-            <div class="panel panel-primary" th:if="${compte}">
+        <div class="col-sm-6" >
+            <div class="panel panel-primary" th:if="${compte}" sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="panel-heading">Opérations sur le compte </div>
                 <div class="panel-body">
+                    <form th:action="@{/saveOperation}" method="GET">
+                        <div>
+                            <label>Compte : </label>
+                            <label th:text="${codeCompte}"></label>
+                            <input type="hidden" name="codeCompte" th:value="${codeCompte}">
+                        </div>
+                        <div>
+                            <input id="vers" type="radio" name="typeOperation" value="versement" checked>
+                            <label for="vers">Versement</label>
+                            <input id="retr" type="radio" name="typeOperation" value="retrait">
+                            <label for="retr">Retrait</label>
+                            <input id="vir" type="radio" name="typeOperation" value="virement">
+                            <label for="vir">Virement</label>
+                        </div>
+                        
+                        <span>
+                            <label for="">Montant</label>
+                            <input type="text" name="montant">
+                        </span>
+                        <span class="compte_to displayNone">
+                            <label for="">Vers: </label>
+                            <input type="text" name="codeCompte2">
+                        </span>
+                        <div style="min-height: 30px;">
+                            <div class="text-danger" th:if="${#httpServletRequest.getParameter('error')}" th:text="${#httpServletRequest.getParameter('error')}">
+                        </div>
+                        </div>
+                        <div><button type="submit" class="btn btn-success">Valider</button></div>
+                    </form>
 
                 </div>
             </div>
@@ -90,6 +121,13 @@
                         </tr>
 
                     </table>
+                    <div class="container">
+                        <ul class="nav nav-pills">
+                            <li th:each=" p, status : ${pages}">
+                                <a th:classappend="${pageActuelle==status.index} ? active : '' "    th:href="@{/consulterCompte(codeCompte=${codeCompte}, page=${status.index})}" th:text="${status.index}+1"></a>
+                            </li>
+                        </ul>
+                    </div>
 
                 </div>
             </div>

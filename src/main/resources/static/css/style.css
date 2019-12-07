@@ -2,3 +2,15 @@
     text-align: center;
     padding: 1rem;
 }
+
+.displayNone{
+    display:none;
+}
+
+a.active{
+    color: #fff;
+    background-color: #337ab7;
+}
+.marginTop40{
+    margin-top: 40px;
+}

@@ -50,9 +50,10 @@ public class BanqueServiceImpl implements IBanqueService {
         double decouvert = 0;
         if(compte instanceof CompteCourant)
             decouvert = ((CompteCourant) compte).getDecouvert();
-        
+
+            
         if((compte.getSolde() + decouvert) < montant)
-            throw new RuntimeException("Vous n'avez pas assez d'argent dans votre compte pour effectuer un retrait");
+            throw new RuntimeException("Solde insuffisant");
         
         Retrait r= new Retrait (new Date(), montant, compte);
         operationRepository.save(r);
@@ -65,6 +66,12 @@ public class BanqueServiceImpl implements IBanqueService {
 
     @Override
     public void virement(String codeCompteFrom, String codeCompteTo, double montant) {
+        if(codeCompteFrom.isEmpty() | codeCompteTo.isEmpty())
+        throw new RuntimeException("Veuillez renseigner les comptes");
+        if(codeCompteFrom.equals(codeCompteTo))
+        throw new RuntimeException("Opération impossible");
+        if(montant <1)  
+        throw new RuntimeException("Veuillez saisir un solde");
         retirer(codeCompteFrom,montant);
         verser(codeCompteTo,montant);
     }
